@@ -50,6 +50,8 @@ class OpenMPIConan(ConanFile):
             self.copy(pattern="LICENSE")
 
     def package_info(self):
-        self.cpp_info.libs = tools.collect_libs(self)
+        self.cpp_info.libs = ['mpi', 'open-rte', 'open-pal']
+        if self.settings.os == "Linux":
+            self.cpp_info.libs.extend(['dl', 'pthread', 'rt', 'util'])
         self.env_info.MPI_HOME = self.package_folder
         self.env_info.MPI_BIN = os.path.join(self.package_folder, 'bin')
