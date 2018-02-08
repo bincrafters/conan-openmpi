@@ -17,7 +17,7 @@ class OpenMPIConan(ConanFile):
     default_options = "shared=False", "fortran=no"
 
     def requirements(self):
-        self.requires.add("zlib/1.2.11@conan/stable")
+        self.requires.add("zlib/[>=1.2.11]@conan/stable")
 
     def system_requirements(self):
         if self.settings.os == "Linux":
