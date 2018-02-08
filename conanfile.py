@@ -21,8 +21,8 @@ class OpenMPIConan(ConanFile):
         self.requires.add("zlib/[>=1.2.11]@conan/stable")
 
     def system_requirements(self):
-        if self.settings.os == "Linux":
-            if tools.os_info.linux_distro == "ubuntu" or tools.os_info.linux_distro == "debian":
+        if self.settings.os == "Linux" and tools.os_info.is_linux:
+            if tools.os_info.with_apt:
                 installer = tools.SystemPackageTool()
                 installer.install('openssh-client')
 
