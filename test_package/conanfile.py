@@ -16,7 +16,7 @@ class TestPackageConan(ConanFile):
 
     def test(self):
         mpiexec = os.path.join(os.environ['MPI_BIN'], 'mpiexec')
-        command = '%s %s' % (mpiexec, os.path.join("bin", "test_package"))
+        command = '%s -np 2 %s' % (mpiexec, os.path.join("bin", "test_package"))
         with tools.environment_append(RunEnvironment(self).vars):
             if self.settings.os == "Windows":
                 self.run(command)
