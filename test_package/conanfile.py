@@ -16,7 +16,9 @@ class TestPackageConan(ConanFile):
 
     def test(self):
         mpiexec = os.path.join(os.environ['MPI_BIN'], 'mpiexec')
-        command = '%s -np 2 %s' % (mpiexec, os.path.join("bin", "test_package"))
+        with open('hostfile', 'w') as f:
+            f.write('localhost slots=2\n')
+        command = '%s --oversubscribe -np 2 --hostfile hostfile %s' % (mpiexec, os.path.join("bin", "test_package"))
         with tools.environment_append(RunEnvironment(self).vars):
             if self.settings.os == "Windows":
                 self.run(command)
