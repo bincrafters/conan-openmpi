@@ -54,8 +54,7 @@ class OpenMPIConan(ConanFile):
             env_build.make(args=['install'])
 
     def package(self):
-        with tools.chdir("sources"):
-            self.copy(pattern="LICENSE")
+        self.copy(pattern="LICENSE", src='sources')
 
     def package_info(self):
         self.cpp_info.libs = ['mpi', 'open-rte', 'open-pal']
