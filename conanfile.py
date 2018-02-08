@@ -17,6 +17,9 @@ class OpenMPIConan(ConanFile):
                "fortran": ['yes', 'mpifh', 'usempi', 'usempi80', 'no']}
     default_options = "shared=False", "fPIC=True", "fortran=no"
 
+    def config(self):
+        del self.settings.compiler.libcxx
+
     def requirements(self):
         self.requires.add("zlib/[>=1.2.11]@conan/stable")
 
