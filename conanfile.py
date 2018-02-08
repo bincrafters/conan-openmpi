@@ -13,8 +13,9 @@ class OpenMPIConan(ConanFile):
     license = "https://www.open-mpi.org/community/license.php"
     settings = "os", "arch", "compiler", "build_type"
     options = {"shared": [True, False],
+               "fPIC": [True, False],
                "fortran": ['yes', 'mpifh', 'usempi', 'usempi80', 'no']}
-    default_options = "shared=False", "fortran=no"
+    default_options = "shared=False", "fPIC=True", "fortran=no"
 
     def requirements(self):
         self.requires.add("zlib/[>=1.2.11]@conan/stable")
@@ -44,6 +45,7 @@ class OpenMPIConan(ConanFile):
                 args.extend(['--enable-shared', '--disable-static'])
             else:
                 args.extend(['--enable-static', '--disable-shared'])
+            args.append('--with-pic' if self.options.fPIC else '--without-pic')
             args.append('--enable-mpi-fortran=%s' % str(self.options.fortran))
             args.append('--with-zlib=%s' % self.deps_cpp_info['zlib'].rootpath)
             args.append('--with-zlib-libdir=%s' % self.deps_cpp_info['zlib'].lib_paths[0])
