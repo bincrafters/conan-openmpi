@@ -65,4 +65,6 @@ class OpenMPIConan(ConanFile):
             self.cpp_info.libs.extend(['dl', 'pthread', 'rt', 'util'])
         self.env_info.MPI_HOME = self.package_folder
         self.env_info.OPAL_PREFIX = self.package_folder
-        self.env_info.MPI_BIN = os.path.join(self.package_folder, 'bin')
+        mpi_bin = os.path.join(self.package_folder, 'bin')
+        self.env_info.MPI_BIN = mpi_bin
+        self.env_info.PATH.append(mpi_bin)
