@@ -40,6 +40,7 @@ class OpenMPIConan(ConanFile):
     def build(self):
         with tools.chdir("sources"):
             env_build = AutoToolsBuildEnvironment(self)
+            env_build.fpic = self.options.fPIC
             args = ['--disable-wrapper-rpath',
                     'prefix=%s' % self.package_folder]
             if self.settings.build_type == 'Debug':
