@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 
 from conans import ConanFile, tools, AutoToolsBuildEnvironment
+from conans.errors import ConanInvalidConfiguration
 import os
 
 
 class OpenMPIConan(ConanFile):
     name = "openmpi"
-    version = "3.0.0"
+    version = "3.1.2"
+    homepage = "https://www.open-mpi.org"
     url = "https://github.com/bincrafters/conan-openmpi"
     description = "A High Performance Message Passing Library"
     license = "https://www.open-mpi.org/community/license.php"
@@ -16,12 +18,15 @@ class OpenMPIConan(ConanFile):
                "fPIC": [True, False],
                "fortran": ['yes', 'mpifh', 'usempi', 'usempi80', 'no']}
     default_options = "shared=False", "fPIC=True", "fortran=no"
+    _source_subfolder = "sources"
 
     def config(self):
         del self.settings.compiler.libcxx
+        if self.settings.os == "Windows":
+            raise ConanInvalidConfiguration("OpenMPI doesn't support Windows")
 
     def requirements(self):
-        self.requires.add("zlib/[>=1.2.11]@conan/stable")
+        self.requires.add("zlib/1.2.11@conan/stable")
 
     def system_requirements(self):
         if self.settings.os == "Linux" and tools.os_info.is_linux:
@@ -35,14 +40,13 @@ class OpenMPIConan(ConanFile):
         source_url = "https://www.open-mpi.org/software/ompi"
         tools.get("{0}/{1}/downloads/{2}-{3}.tar.bz2".format(source_url, version_short, self.name, self.version))
         extracted_dir = self.name + "-" + self.version
-        os.rename(extracted_dir, "sources")
+        os.rename(extracted_dir, self._source_subfolder)
 
     def build(self):
-        with tools.chdir("sources"):
+        with tools.chdir(self._source_subfolder):
             env_build = AutoToolsBuildEnvironment(self)
             env_build.fpic = self.options.fPIC
-            args = ['--disable-wrapper-rpath',
-                    'prefix=%s' % self.package_folder]
+            args = ['--disable-wrapper-rpath', '--disable-wrapper-runpath']
             if self.settings.build_type == 'Debug':
                 args.append('--enable-debug')
             if self.options.shared:
@@ -55,10 +59,10 @@ class OpenMPIConan(ConanFile):
             args.append('--with-zlib-libdir=%s' % self.deps_cpp_info['zlib'].lib_paths[0])
             env_build.configure(args=args)
             env_build.make()
-            env_build.make(args=['install'])
+            env_build.install()
 
     def package(self):
-        self.copy(pattern="LICENSE", src='sources')
+        self.copy(pattern="LICENSE", src='sources', dst='licenses')
 
     def package_info(self):
         self.cpp_info.libs = ['mpi', 'open-rte', 'open-pal']
