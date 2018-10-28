@@ -40,6 +40,7 @@ class OpenMPIConan(ConanFile):
     def build(self):
         with tools.chdir("sources"):
             env_build = AutoToolsBuildEnvironment(self)
+            env_build.fpic = self.options.fPIC
             args = ['--disable-wrapper-rpath',
                     'prefix=%s' % self.package_folder]
             if self.settings.build_type == 'Debug':
@@ -64,4 +65,7 @@ class OpenMPIConan(ConanFile):
         if self.settings.os == "Linux":
             self.cpp_info.libs.extend(['dl', 'pthread', 'rt', 'util'])
         self.env_info.MPI_HOME = self.package_folder
-        self.env_info.MPI_BIN = os.path.join(self.package_folder, 'bin')
+        self.env_info.OPAL_PREFIX = self.package_folder
+        mpi_bin = os.path.join(self.package_folder, 'bin')
+        self.env_info.MPI_BIN = mpi_bin
+        self.env_info.PATH.append(mpi_bin)
