@@ -7,7 +7,7 @@ import os
 
 class OpenMPIConan(ConanFile):
     name = "openmpi"
-    version = "2.0.4"
+    version = "2.1.1"
     url = "https://github.com/bincrafters/conan-openmpi"
     description = "A High Performance Message Passing Library"
     license = "https://www.open-mpi.org/community/license.php"
