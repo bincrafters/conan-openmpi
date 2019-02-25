@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from conans import ConanFile, CMake, tools, RunEnvironment
+from conans import ConanFile, CMake, tools
 import os
 
 
@@ -19,10 +19,5 @@ class TestPackageConan(ConanFile):
         with open('hostfile', 'w') as f:
             f.write('localhost slots=2\n')
         command = '%s --oversubscribe -np 2 --hostfile hostfile %s' % (mpiexec, os.path.join("bin", "test_package"))
-        with tools.environment_append(RunEnvironment(self).vars):
-            if self.settings.os == "Windows":
-                self.run(command)
-            elif self.settings.os == "Macos":
-                self.run("DYLD_LIBRARY_PATH=%s %s" % (os.environ.get('DYLD_LIBRARY_PATH', ''), command))
-            else:
-                self.run("LD_LIBRARY_PATH=%s %s" % (os.environ.get('LD_LIBRARY_PATH', ''), command))
+        with tools.environment_append({'TMPDIR': '/tmp'}):
+            self.run(command, run_environment=True)
