@@ -2,7 +2,7 @@
 
 | Bintray | Windows | Linux & macOS | 
 |:--------:|:---------:|:-----------------:|
-|[![Download](https://api.bintray.com/packages/bincrafters/public-conan/openmpi%3Abincrafters/images/download.svg) ](https://bintray.com/bincrafters/public-conan/openmpi%3Abincrafters/_latestVersion)|Not Supported|[![Build Status](https://travis-ci.org/bincrafters/conan-openmpi.svg)](https://travis-ci.org/bincrafters/conan-openmpi)|
+|[![Download](https://api.bintray.com/packages/bincrafters/public-conan/openmpi%3Abincrafters/images/download.svg) ](https://bintray.com/bincrafters/public-conan/openmpi%3Abincrafters/_latestVersion)|Not Supported|[![Build Status](https://travis-ci.com/bincrafters/conan-openmpi.svg)](https://travis-ci.com/bincrafters/conan-openmpi)|
 
 ## Conan.io Information
 
