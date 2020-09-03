@@ -24,7 +24,7 @@ class OpenMPIConan(ConanFile):
             raise ConanInvalidConfiguration("OpenMPI doesn't support Windows")
 
     def requirements(self):
-        self.requires.add("zlib/1.2.11")
+        self.requires("zlib/1.2.11")
 
     def system_requirements(self):
         if self.settings.os == "Linux" and tools.os_info.is_linux:
